@@ -1,7 +1,11 @@
 import * as React from 'react';
-import { Button, StyleSheet, View, Text } from 'react-native';
+import { Image, StyleSheet, View, Text } from 'react-native';
 import { createAppContainer } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
+import { Card, ListItem, Button, Icon } from 'react-native-elements'
+
+
+import { Event } from './components/Event';
 
 class HomeScreen extends React.Component {
   render() {
@@ -19,6 +23,14 @@ class HomeScreen extends React.Component {
   }
 }
 
+const events = [
+  {
+     name: 'Pub crawl',
+     location: 'Turing Tap, Manchester',
+     eta: '22 minutes'
+  }
+]
+
 class EventsScreen extends React.Component {
   render() {
     return (
@@ -26,6 +38,18 @@ class EventsScreen extends React.Component {
         <View style={styles.title}>
           <Text style={styles.titleText}>Events Screen</Text>
         </View>
+
+        <Card>
+          {
+            events.map((u, i) => {
+              return (
+                <View key={i} style={styles.user}>
+                  <Text>{u.name}, {u.location}, {u.eta}</Text>
+                </View>
+              );
+            })
+          }
+        </Card>
       </View>
     );
   }

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Button, View, Text } from 'react-native';
+import { Button, StyleSheet, View, Text } from 'react-native';
 import { createAppContainer } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
 
@@ -7,11 +7,13 @@ class HomeScreen extends React.Component {
   render() {
     return (
       <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-        <Text>Home Screen</Text>
+        <View style={styles.mainTitle}>
+          <Text style={styles.titleText}>Get Home Safe 🤝</Text>
+        </View>
         <Button
-          title="Go to Events"
-          onPress={() => this.props.navigation.navigate('Events')}
-        />
+            title="Events"
+            onPress={() => this.props.navigation.navigate('Events')}
+          />
       </View>
     );
   }
@@ -20,12 +22,20 @@ class HomeScreen extends React.Component {
 class EventsScreen extends React.Component {
   render() {
     return (
-      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-        <Text>Events Screen</Text>
+      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'flex-start' }}>
+        <View style={styles.title}>
+          <Text style={styles.titleText}>Events Screen</Text>
+        </View>
       </View>
     );
   }
 }
+
+const styles = StyleSheet.create({
+	titleText: {
+    fontSize: 28,
+	}
+});
 
 const AppNavigator = createStackNavigator(
   {

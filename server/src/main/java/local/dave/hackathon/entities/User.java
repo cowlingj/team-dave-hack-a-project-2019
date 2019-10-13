@@ -1,5 +1,8 @@
 package local.dave.hackathon.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import javax.persistence.*;
 import java.util.List;
 
@@ -16,7 +19,8 @@ public class User {
 
     private String phoneNumber;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference(value = "users")
     private List<UserEventMap> userEventMaps;
 
     public Integer getId() {

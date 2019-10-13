@@ -76,16 +76,16 @@ export default {
             finishWithJson = resolve
         })
 
-        const interval = setInterval(() => {
+        interval = setInterval(() => {
             const username = "George"
-            const res = await fetch(`http://10.0.2.2:8080/event/${id}/expired?username=${username}`)
-            
-            const json = await res.json()
-
-            if (json.length > 0) {
-                clearInterval(interval)
-                finishWithJson(json)
-            }            
+            fetch(`http://10.0.2.2:8080/event/${id}/expired?username=${username}`)
+                .then(res => res.json())
+                .then(json => {
+                    if (json.length > 0) {
+                        clearInterval(interval)
+                        finishWithJson(json)
+                    } 
+                })        
         }, 10000)
 
         return finishedJson

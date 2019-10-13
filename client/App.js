@@ -41,7 +41,7 @@ class EventsScreen extends React.Component {
     return (
       <View style={{ flex: 1, alignItems: 'center', justifyContent: 'flex-start' }}>
         <View style={styles.title}>
-          <Text style={styles.titleText}>Events Screen</Text>
+          <Text style={styles.titleText}>My events</Text>
         </View>
 
           {
@@ -68,13 +68,18 @@ class SelectedEventScreen extends React.Component {
 
   constructor(props){
     super(props)
-    this.state = { selectedEta: '' }
+    this.state = { 
+      selectedEta: '',
+      isEtaDecided: false,
+      isPersonArrived: false
+    }
   }
 
   render() {
     const { navigation } = this.props;
     // console.log(JSON.stringify(navigation));
 
+    const id = navigation.getParam('id', 0);
     const name = navigation.getParam('name', 'Bob');
     const location = navigation.getParam('location', 'Turing Tap, Manchester');
     return (
@@ -87,14 +92,26 @@ class SelectedEventScreen extends React.Component {
         <DatePicker
           style={{width: 300}}
           date={this.state.selectedEta}
+          disabled={this.state.isEtaDecided && !this.state.isPersonArrived || this.state.isPersonArrived}
           mode='datetime'
           placeholder='What time will you arrive ⏱'
           showIcon={false}
           onDateChange={(selectedEta) => {
-            this.setState({selectedEta: selectedEta})
-            console.log(this.state.selectedEta)
+            this.setState({ selectedEta })
           }}
         />
+
+        {!this.state.isEtaDecided && <Button
+          title="Let's go home 🏃‍"
+          onPress={() => this.setState({ isEtaDecided: true })}
+        />}
+
+        {this.state.isEtaDecided && !this.state.isPersonArrived && <Button
+          title="I've arrived home 🏠"
+          onPress={() => this.setState({ isPersonArrived: true })}
+        />}
+
+        {this.state.isEtaDecided && this.state.isPersonArrived && <Text>Well done for arriving home safely 👏</Text>}
 
       </View>
     );

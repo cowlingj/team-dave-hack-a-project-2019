@@ -19,17 +19,29 @@ export default {
             throw new Error()
         }
     },
-    getEvents: async () => {      
-        return [
-            {
-                name: "My first event",
-                location: "Somewhere"
-            },
-            {
-                name: "My second event",
-                location: "Somewhere else"
+    getEvents: async () => {
+        try {
+            const res = await fetch('http://10.0.2.2:8080/user/event')
+        
+            if (res.status != 200) {
+                throw new Error()
             }
-        ]
+
+            return res.json()
+        } catch(e) {
+            return [
+                {
+                    id: 0,
+                    name: "My first event",
+                    location: "Somewhere"
+                },
+                {
+                    id: 1,
+                    name: "My second event",
+                    location: "Somewhere else"
+                }
+            ]
+        }
     },
     getFriends: async () => {
         const eta1 = new Date()

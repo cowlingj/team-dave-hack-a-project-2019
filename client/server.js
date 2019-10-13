@@ -67,5 +67,27 @@ export default {
         if (res.status !== 200) {
             throw new Error()
         }
-    } 
+    },
+    poll: async (id) => {
+
+        let interval
+        let finishWithJson
+        let finishedJson = new Promise((resolve, _reject) => {
+            finishWithJson = resolve
+        })
+
+        const interval = setInterval(() => {
+            const username = "George"
+            const res = await fetch(`http://10.0.2.2:8080/event/${id}/expired?username=${username}`)
+            
+            const json = await res.json()
+
+            if (json.length > 0) {
+                clearInterval(interval)
+                finishWithJson(json)
+            }            
+        }, 10000)
+
+        return finishedJson
+    }
 }

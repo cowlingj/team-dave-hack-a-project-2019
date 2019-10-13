@@ -49,6 +49,10 @@ class EventsScreen extends React.Component {
                 <Card title={u.name}>
                   <View key={i} style={styles.user}>
                     <Text>{u.location}</Text>
+                    <Button
+                      title="Go"
+                      onPress={() => this.props.navigation.navigate('SelectedEvent', u)}
+                    />
                   </View>
                 </Card>
               );
@@ -59,7 +63,23 @@ class EventsScreen extends React.Component {
   }
 }
 
+class SelectedEventScreen extends React.Component {
+  render() {
+    const { navigation } = this.props;
+    console.log(JSON.stringify(navigation));
 
+    const name = navigation.getParam('name', 'Bob');
+    const location = navigation.getParam('location', 'Turing Tap, Manchester');
+    return (
+      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'flex-start' }}>
+        <View style={styles.title}>
+          <Text style={styles.titleText}>{name}</Text>
+          <Text style={styles.titleText}>{location}</Text>
+        </View>
+      </View>
+    );
+  }
+}
 
 const styles = StyleSheet.create({
 	titleText: {
@@ -70,7 +90,8 @@ const styles = StyleSheet.create({
 const AppNavigator = createStackNavigator(
   {
     Home: HomeScreen,
-    MyEvents: EventsScreen
+    MyEvents: EventsScreen,
+    SelectedEvent: SelectedEventScreen
   },
   {
     initialRouteName: 'Home',

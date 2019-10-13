@@ -64,6 +64,7 @@ public class EventsController {
         UserEventMap userEventMap = userEventMapService.findMapByUserAndEvent(user, event);
         userEventMap.setLeavingTime(LocalDateTime.now());
         userEventMap.setLeavingLocation(event.getLocation());
+        userEventMap.setArrivedHome(false);
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
         LocalDateTime dateTime = LocalDateTime.parse(body.get("eta"), formatter);
@@ -72,4 +73,32 @@ public class EventsController {
 
         return userEventMapService.save(userEventMap);
     }
+
+    @PutMapping("/{eventId}/arrived")
+    public UserEventMap userArrived(@PathVariable("eventId") Integer eventId,
+                                    @RequestParam(value = "username", required = false, defaultValue = "George") String username) {
+        User user = userService.findUser(username);
+        Event event = eventService.findEventById(eventId);
+
+        UserEventMap userEventMap = userEventMapService.findMapByUserAndEvent(user, event);
+        userEventMap.setArrivedHome(true);
+
+        return userEventMapService.save(userEventMap);
+    }
+
+
+    @GetMapping("/{eventId}/expired")
+    public List<User> findExpiredETAs(@PathVariable("eventId") Integer eventId, @RequestParam("username") String username) {
+        Event event = eventService.findEventById(eventId);
+
+        List<User> missing = event.getUserEventMaps()
+                .stream()
+                .filter(userEventMap -> !userEventMap.getUser().getName().equals(username))
+                .filter(userEventMap -> (userEventMap.getETA() != null && !userEventMap.isArrivedHome() && userEventMap.getETA().isBefore(LocalDateTime.now())))
+                .map(userEventMap -> userEventMap.getUser())
+                .collect(Collectors.toList());
+
+        return missing;
+    }
+
 }

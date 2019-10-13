@@ -30,6 +30,8 @@ public class UserEventMap {
     private String leavingLocation;
     private LocalDateTime ETA;
 
+    private boolean arrivedHome;
+
     public Integer getId() {
         return Id;
     }
@@ -84,5 +86,13 @@ public class UserEventMap {
 
     public void setETA(LocalDateTime ETA) {
         this.ETA = ETA;
+    }
+
+    public boolean isArrivedHome() {
+        return arrivedHome;
+    }
+
+    public void setArrivedHome(boolean arrivedHome) {
+        this.arrivedHome = arrivedHome;
     }
 }

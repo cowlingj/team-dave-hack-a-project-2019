@@ -74,6 +74,19 @@ public class EventsController {
         return userEventMapService.save(userEventMap);
     }
 
+    @PutMapping("/{eventId}/arrived")
+    public UserEventMap userArrived(@PathVariable("eventId") Integer eventId,
+                                    @RequestParam(value = "username", required = false, defaultValue = "George") String username) {
+        User user = userService.findUser(username);
+        Event event = eventService.findEventById(eventId);
+
+        UserEventMap userEventMap = userEventMapService.findMapByUserAndEvent(user, event);
+        userEventMap.setArrivedHome(true);
+
+        return userEventMapService.save(userEventMap);
+    }
+
+
     @GetMapping("/{eventId}/expired")
     public List<User> findExpiredETAs(@PathVariable("eventId") Integer eventId, @RequestParam("username") String username) {
         Event event = eventService.findEventById(eventId);
@@ -87,4 +100,5 @@ public class EventsController {
 
         return missing;
     }
+
 }

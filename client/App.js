@@ -103,7 +103,12 @@ class SelectedEventScreen extends React.Component {
 
         {!this.state.isEtaDecided && <Button
           title="Let's go home 🏃‍"
-          onPress={() => this.setState({ isEtaDecided: true })}
+          onPress={() => {
+            this.setState({ isEtaDecided: true })
+            setTimeout(()=>{
+              this.setState({ isPersonArrived: true })
+            }, 15000)
+          }}
         />}
 
         {this.state.isEtaDecided && !this.state.isPersonArrived && <Button

@@ -1,3 +1,4 @@
+
 export default {
     ping: async () => {
         const res = await fetch('http://10.0.2.2:8080/ping')
@@ -21,13 +22,13 @@ export default {
     },
     getEvents: async () => {
         try {
-            const res = await fetch('http://10.0.2.2:8080/user/event')
+            const res = await fetch('http://10.0.2.2:8080/user/events')
         
             if (res.status != 200) {
                 throw new Error()
             }
 
-            return res.json()
+            return await res.json()
         } catch(e) {
             return [
                 {

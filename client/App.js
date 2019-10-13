@@ -1,7 +1,10 @@
 import * as React from 'react';
-import { Button, StyleSheet, View, Text } from 'react-native';
+import { Image, StyleSheet, View, Text } from 'react-native';
 import { createAppContainer } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
+import { Card, ListItem, Button, Icon } from 'react-native-elements'
+
+import server from './server';
 
 class HomeScreen extends React.Component {
   render() {
@@ -12,7 +15,7 @@ class HomeScreen extends React.Component {
         </View>
         <Button
             title="Events"
-            onPress={() => this.props.navigation.navigate('Events')}
+            onPress={() => this.props.navigation.navigate('MyEvents')}
           />
       </View>
     );
@@ -20,16 +23,43 @@ class HomeScreen extends React.Component {
 }
 
 class EventsScreen extends React.Component {
+  
+  constructor() {
+    super()
+    this.state = { events: [] }
+  }
+  
+  componentDidMount() {
+    server.getEvents().then(events => {
+      console.log(JSON.stringify(events))
+      this.setState({events})
+    });
+  }
+
   render() {
     return (
       <View style={{ flex: 1, alignItems: 'center', justifyContent: 'flex-start' }}>
         <View style={styles.title}>
           <Text style={styles.titleText}>Events Screen</Text>
         </View>
+
+          {
+            this.state.events.map((u, i) => {
+              return (
+                <Card title={u.name}>
+                  <View key={i} style={styles.user}>
+                    <Text>{u.location}</Text>
+                  </View>
+                </Card>
+              );
+            })
+          }
       </View>
     );
   }
 }
+
+
 
 const styles = StyleSheet.create({
 	titleText: {
@@ -40,7 +70,7 @@ const styles = StyleSheet.create({
 const AppNavigator = createStackNavigator(
   {
     Home: HomeScreen,
-    Events: EventsScreen,
+    MyEvents: EventsScreen
   },
   {
     initialRouteName: 'Home',

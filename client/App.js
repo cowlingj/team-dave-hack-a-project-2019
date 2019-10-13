@@ -4,8 +4,7 @@ import { createAppContainer } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
 import { Card, ListItem, Button, Icon } from 'react-native-elements'
 
-
-import { Event } from './components/Event';
+import server from './server';
 
 class HomeScreen extends React.Component {
   render() {
@@ -23,15 +22,20 @@ class HomeScreen extends React.Component {
   }
 }
 
-const events = [
-  {
-     name: 'Pub crawl',
-     location: 'Turing Tap, Manchester',
-     eta: '22 minutes'
-  }
-]
-
 class EventsScreen extends React.Component {
+  
+  constructor() {
+    super()
+    this.state = { events: [] }
+  }
+  
+  componentDidMount() {
+    server.getEvents().then(events => {
+      console.log(JSON.stringify(events))
+      this.setState({events})
+    });
+  }
+
   render() {
     return (
       <View style={{ flex: 1, alignItems: 'center', justifyContent: 'flex-start' }}>
@@ -41,10 +45,10 @@ class EventsScreen extends React.Component {
 
         <Card>
           {
-            events.map((u, i) => {
+            this.state.events.map((u, i) => {
               return (
                 <View key={i} style={styles.user}>
-                  <Text>{u.name}, {u.location}, {u.eta}</Text>
+                  <Text>{u.name}, {u.location}, {u.eta.toString()}</Text>
                 </View>
               );
             })
@@ -54,6 +58,8 @@ class EventsScreen extends React.Component {
     );
   }
 }
+
+
 
 const styles = StyleSheet.create({
 	titleText: {

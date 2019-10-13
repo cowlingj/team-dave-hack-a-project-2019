@@ -56,5 +56,16 @@ export default {
                 eta: eta1
             }
         ]
-    }
+    },
+    leave: async (id, eta) => {
+
+        const res = await fetch(`http://10.0.2.2:8080/event/${id}/leaving`, {
+            method: 'PUT',
+            body: JSON.stringify({ eta })
+        })
+
+        if (res.status !== 200) {
+            throw new Error()
+        }
+    } 
 }

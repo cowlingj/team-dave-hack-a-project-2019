@@ -15,7 +15,7 @@ class HomeScreen extends React.Component {
         </View>
         <Button
             title="Events"
-            onPress={() => this.props.navigation.navigate('Events')}
+            onPress={() => this.props.navigation.navigate('MyEvents')}
           />
       </View>
     );
@@ -43,17 +43,17 @@ class EventsScreen extends React.Component {
           <Text style={styles.titleText}>Events Screen</Text>
         </View>
 
-        <Card>
           {
             this.state.events.map((u, i) => {
               return (
-                <View key={i} style={styles.user}>
-                  <Text>{u.name}, {u.location}, {u.eta.toString()}</Text>
-                </View>
+                <Card title={u.name}>
+                  <View key={i} style={styles.user}>
+                    <Text>{u.location}</Text>
+                  </View>
+                </Card>
               );
             })
           }
-        </Card>
       </View>
     );
   }
@@ -70,7 +70,7 @@ const styles = StyleSheet.create({
 const AppNavigator = createStackNavigator(
   {
     Home: HomeScreen,
-    Events: EventsScreen,
+    MyEvents: EventsScreen
   },
   {
     initialRouteName: 'Home',

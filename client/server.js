@@ -19,24 +19,15 @@ export default {
             throw new Error()
         }
     },
-    getEvents: async () => {
-        
-        const eta1 = new Date()
-        const eta2 = new Date()
-
-        eta1.setHours(20)
-        eta2.setHours(21)
-        
+    getEvents: async () => {      
         return [
             {
-                name: "my first event",
-                location: "somewhere",
-                eta: eta1
+                name: "My first event",
+                location: "Somewhere"
             },
             {
-                name: "my second event",
-                location: "somewhere else",
-                eta: eta2
+                name: "My second event",
+                location: "Somewhere else"
             }
         ]
     },

@@ -3,12 +3,10 @@ package local.dave.hackathon.controllers;
 import local.dave.hackathon.entities.Event;
 import local.dave.hackathon.services.EventService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-@RestController("/event")
+@RestController
+@RequestMapping("/event")
 public class EventsController {
 
     @Autowired

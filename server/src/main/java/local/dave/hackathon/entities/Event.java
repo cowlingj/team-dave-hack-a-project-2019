@@ -1,5 +1,7 @@
 package local.dave.hackathon.entities;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import javax.persistence.*;
 import java.util.List;
 
@@ -14,7 +16,8 @@ public class Event {
 
     private String location;
 
-    @OneToMany(mappedBy = "event")
+    @OneToMany(mappedBy = "event", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference(value = "events")
     private List<UserEventMap> userEventMaps;
 
     public Integer getId() {

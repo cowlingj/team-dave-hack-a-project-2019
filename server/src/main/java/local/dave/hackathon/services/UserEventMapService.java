@@ -17,4 +17,7 @@ public class UserEventMapService {
         return userEventMapRepository.save(userEventMap);
     }
 
+    public UserEventMap findMapByUserAndEvent(User user, Event event) {
+        return userEventMapRepository.findByUserAndEvent(user, event);
+    }
 }

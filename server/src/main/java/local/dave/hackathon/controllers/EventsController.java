@@ -6,9 +6,13 @@ import local.dave.hackathon.entities.UserEventMap;
 import local.dave.hackathon.services.EventService;
 import local.dave.hackathon.services.UserEventMapService;
 import local.dave.hackathon.services.UserService;
+import org.apache.tomcat.jni.Local;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -47,6 +51,25 @@ public class EventsController {
         Event event = eventService.findEventById(eventId);
 
         UserEventMap userEventMap = eventService.createUserEventMap(user, event, false);
+        return userEventMapService.save(userEventMap);
+    }
+
+    @PutMapping("/{eventId}/leaving")
+    public UserEventMap userLeaving(@PathVariable("eventId") Integer eventId,
+                                    @RequestParam(value = "username", required = false, defaultValue = "George") String username,
+                                    @RequestBody HashMap<String, String> body) {
+        User user = userService.findUser(username);
+        Event event = eventService.findEventById(eventId);
+
+        UserEventMap userEventMap = userEventMapService.findMapByUserAndEvent(user, event);
+        userEventMap.setLeavingTime(LocalDateTime.now());
+        userEventMap.setLeavingLocation(event.getLocation());
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+        LocalDateTime dateTime = LocalDateTime.parse(body.get("eta"), formatter);
+
+        userEventMap.setETA(dateTime);
+
         return userEventMapService.save(userEventMap);
     }
 }

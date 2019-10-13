@@ -21,18 +21,25 @@ public class EventService {
     @Autowired
     private UserEventMapRepository userEventMapRepository;
 
+    public Event findEventById(Integer id) {
+        return eventsRepository.findById(id).get();
+    }
+
     public Event save(Event event) {
+        User user = userRepository.findByNameIgnoreCase("George");
+        event = eventsRepository.save(event);
+        createUserEventMap(user, event, true);
+        return event;
+    }
+
+    public UserEventMap createUserEventMap(User user, Event event, boolean isOwner) {
         UserEventMap userEventMap = new UserEventMap();
 
-        event = eventsRepository.save(event);
-
-        User user = userRepository.findByNameIgnoreCase("George");
         userEventMap.setUser(user);
         userEventMap.setEvent(event);
-        userEventMap.setOwner(true);
+        userEventMap.setOwner(isOwner);
 
-        userEventMapRepository.save(userEventMap);
-        return event;
+        return userEventMapRepository.save(userEventMap);
     }
 
 }

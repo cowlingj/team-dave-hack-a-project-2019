@@ -1,9 +1,7 @@
 package local.dave.hackathon.entities;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.List;
 
 @Entity
 public class User {
@@ -17,6 +15,9 @@ public class User {
     private String homeAddress;
 
     private String phoneNumber;
+
+    @OneToMany(mappedBy = "user")
+    private List<UserEventMap> userEventMaps;
 
     public Integer getId() {
         return Id;
@@ -48,5 +49,14 @@ public class User {
 
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
+    }
+
+
+    public List<UserEventMap> getUserEventMaps() {
+        return userEventMaps;
+    }
+
+    public void setUserEventMaps(List<UserEventMap> userEventMaps) {
+        this.userEventMaps = userEventMaps;
     }
 }
